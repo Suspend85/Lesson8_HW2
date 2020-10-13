@@ -18,30 +18,22 @@ def getting_text_from_xml(filename):
     return news_text
 
 
-def counting_news_text(news_text, char_count):
-    """ Creating list of words and their rating """
+def rating_news_text(news_text, char_count, word_count):
+    """ Creating top list of words """
     words = news_text.split()
     filter_list = []
     res = []
     for word in words:
         if len(word) >= int(char_count):
             filter_list.append(word)
-    word_counts = Counter([word.lower() for word in filter_list])
-    for key, value in word_counts.items():
-        res.append([key, value])
-    return res
-
-
-def rating_news(res, word_count):
-    """ Creating top list """
-    res = sorted(res, key=lambda x: x[1], reverse=True)
-    top_words = res[: int(word_count)]
-    return top_words
+    low_words = [word.lower() for word in filter_list]
+    word_counts = Counter(low_words).most_common(int(word_count))
+    return word_counts
 
 
 def main():
-    pprint(rating_news(counting_news_text(getting_text_from_xml(
-        "newsafr.xml"), input("Кол-во символов: ")), input("кол-во слов: ")))
+    pprint(rating_news_text(getting_text_from_xml(
+        "newsafr.xml"), input("Кол-во символов: "), input("кол-во слов: ")))
 
 
 main()
