@@ -14,7 +14,7 @@ def getting_text_from_xml(filename):
     items = root.findall("channel/item")
     news_text = ''
     for item in items:
-        news_text += item.find("description").text
+        news_text = item.find("description").text
     return news_text
 
 
@@ -24,16 +24,16 @@ def rating_news_text(news_text, char_count, word_count):
     filter_list = []
     res = []
     for word in words:
-        if len(word) >= int(char_count):
+        if len(word) >= char_count:
             filter_list.append(word)
     low_words = [word.lower() for word in filter_list]
-    word_counts = Counter(low_words).most_common(int(word_count))
+    word_counts = Counter(low_words).most_common(word_count)
     return word_counts
 
 
 def main():
     pprint(rating_news_text(getting_text_from_xml(
-        "newsafr.xml"), input("Кол-во символов: "), input("кол-во слов: ")))
+        "newsafr.xml"), int(input("Кол-во символов: ")), int(input("кол-во слов: "))))
 
 
 main()
